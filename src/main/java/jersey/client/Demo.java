@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -32,23 +31,23 @@ public class Demo {
 	        authHeaders.add("Content-Type", "application/json");
 //	        //查询客户群信息
 //	        //GET  访问  http://127.0.0.1:8081/recEng/v1/customergrp?grpid=206
-//	        String json= ClientBuilder.newClient()
-//	        		.target("http://10.1.2.225:8081/recEng/v1/customergrp/pagingByCondition")
-//	        		.queryParam("namelike", "客户群")  //.target("http://10.1.2.6:8081/recEng/v1/customergrp?grpid=206") 也可以
-//	        		.request()
-//	        		.headers(authHeaders)
-//	        		.get(String.class);
-//	        System.out.println(json);
-//	        
-	       String json= JerseyClientBuilder.newClient()
-//	        		.target("http://10.1.2.225:8081/recEng/v1/customergrp")
-//	        		.queryParam("grpid", 415)  //
-	        		.target("http://10.1.2.225:8081/recEng/v1/customergrp?grpid=415") 
-	        		//也可以
+	        String json= ClientBuilder.newClient()
+	        		.target("http://127.0.0.1:8081/recEng/v1/customergrp;sss=rrrrrrrrr?grpid=206")
+	        		//.queryParam("namelike", "客户群")  //.target("http://10.1.2.6:8081/recEng/v1/customergrp?grpid=206") 也可以
 	        		.request()
 	        		.headers(authHeaders)
 	        		.get(String.class);
 	        System.out.println(json);
+//	        
+//	       String json= JerseyClientBuilder.newClient()
+////	        		.target("http://10.1.2.225:8081/recEng/v1/customergrp")
+////	        		.queryParam("grpid", 415)  //
+//	        		.target("http://10.1.2.225:8081/recEng/v1/customergrp?grpid=415") 
+//	        		//也可以
+//	        		.request()
+//	        		.headers(authHeaders)
+//	        		.get(String.class);
+//	        System.out.println(json);
 //	        
 ////	        //受众分析
 ////	        //POST PUT
@@ -66,17 +65,21 @@ public class Demo {
 //	        		.header("Content-Type", "application/json")
 //	        		.get(String.class);
 //	        System.out.println(respstring);
-
 	        //文件上传
-//	        String filejson=JerseyClientBuilder.createClient()
-//				        .register(MultiPartFeature.class)
-//				        .target("http://10.1.2.225:8081/recEng/v1/material?id=xx")
-//			    		.request()
-//			    		.headers(authHeaders)
-//			    		.post(Entity.entity(new FormDataMultiPart().bodyPart(new FileDataBodyPart("file", new File("E:/1.png"))), MediaType.MULTIPART_FORM_DATA_TYPE),String.class);
-//    		 System.out.println(filejson);
-    		 
+	        String filejson=JerseyClientBuilder.createClient()
+				        .register(MultiPartFeature.class)
+				        .target("http://10.1.2.225:8081/recEng/v1/material?id=xx")
+			    		.request()
+			    		.headers(authHeaders)
+			    		.post(Entity.entity(new FormDataMultiPart().bodyPart(new FileDataBodyPart("file", new File("E:/1.png"))), MediaType.MULTIPART_FORM_DATA_TYPE),String.class);
+    		 System.out.println(filejson);
 	        
+	        
+//	        String result=JerseyClientBuilder.createClient()
+//	        .target("http://10.1.2.220:8083/recEng-Recomm/v1/recqry/recQryAction#xxxxxxxx|yyyyyy")
+//    		.request()
+//    		.post(Entity.entity("tkn_name=qdcc1,qdcc2&tkn_val=38CB4,22c&msisdn=13946084253&mediaId=10001&positionId=ad10001&adNumbers=1&materialType=2&reservedOne=one&reservedTwo=two&reservedThree=three",MediaType.APPLICATION_FORM_URLENCODED),String.class);
+//	        System.out.println(result);
 	}
 	
 

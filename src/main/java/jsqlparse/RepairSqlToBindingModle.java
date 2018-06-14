@@ -18,10 +18,14 @@ import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
 import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
+import net.sf.jsqlparser.expression.operators.relational.ItemsListVisitor;
 import net.sf.jsqlparser.expression.operators.relational.ItemsListVisitorAdapter;
+import net.sf.jsqlparser.expression.operators.relational.MultiExpressionList;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.StatementVisitorAdapter;
 import net.sf.jsqlparser.statement.insert.Insert;
+import net.sf.jsqlparser.statement.select.SubSelect;
 import net.sf.jsqlparser.statement.update.Update;
 
 public class RepairSqlToBindingModle {
@@ -32,10 +36,11 @@ public class RepairSqlToBindingModle {
 	 
 	   String update="update EDC_OGG.USER_PRODUCT set change_expire_date=sysdate  where HOME_CITY=595.0 and PRODUCT_TYPE=1002.0 and SUBSCRIPTION_ID=2.03385187981E11 and  change_inure_date between to_date(to_char(sysdate,'yyyy-mm-dd HH24'),'yyyy-mm-dd HH24:mi:ss') and to_date(to_char(sysdate+1/24,'yyyy-mm-dd HH24'),'yyyy-mm-dd HH24:mi:ss ') and change_expire_date>sysdate";
 	   long btim = System.currentTimeMillis();
-	   for(int i=0;i<1000;i++){
-		   Statement stmt = parser.parse(new StringReader(sql));
+	   for(int i=0;i<10000;i++){
+		   Statement stmt = parser.parse(new StringReader(update));
 		  // System.out.println(stmt.toString());
 		   if(stmt instanceof Insert){
+			   
 			   ExpressionList il = (ExpressionList) ((Insert) stmt).getItemsList();
 			   InsertItemsListVisitor insertItemsListVisitor =new InsertItemsListVisitor();
 			   il.accept(insertItemsListVisitor);
@@ -45,13 +50,37 @@ public class RepairSqlToBindingModle {
 			   Expression where = ((Update) stmt).getWhere();
 			   WhereVisitor visitor = new WhereVisitor();
 			   where.accept(visitor);
-			   System.out.println(stmt.toString());
-			   System.out.println(visitor.data);
 		   }
 	   }
 	   long etim = System.currentTimeMillis();
 	   System.out.println((etim-btim)+"ms");
 	  
+   }
+   
+   public static class InsertStatmentVisitor extends StatementVisitorAdapter{
+	   @Override
+	    public void visit(Insert insert) {
+		   insert.getItemsList().accept(new ItemsListVisitor() {
+			
+			@Override
+			public void visit(MultiExpressionList multiExprList) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void visit(ExpressionList expressionList) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void visit(SubSelect subSelect) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    }
    }
    
    public static class Value{
@@ -141,11 +170,9 @@ public class RepairSqlToBindingModle {
 	    public void visit(Function function) {
 	        if (function.getParameters() != null) {
 	            function.getParameters().accept(this);
-	            System.out.println(function.getParameters());
 	        }
 	        if (function.getKeep() != null) {
 	            function.getKeep().accept(this);
-	            System.out.println(function.getKeep());
 	        }
 	    }
 	   public void visit(EqualsTo eq) {

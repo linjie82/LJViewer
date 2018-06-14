@@ -1,12 +1,12 @@
 package demo;
 
+import java.util.UUID;
+
 public class Main {
 	
 	public static void main(String[] args) {
-		try(Closeable1 closeable1=new Closeable1();Closeable3 closeable3 = new Closeable3()){
-			
-		}catch (Exception e) {
-		}
+		//042f2397-f2da-4481-b78e-9323d87ebfbb
+		System.err.println(UUID.randomUUID().toString());
 	}
 
 }

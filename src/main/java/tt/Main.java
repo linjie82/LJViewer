@@ -21,11 +21,6 @@ public class Main {
 //		preparedStatement.executeBatch();
 //		connection.commit();
 		
-		int a=5;
-		int b=7;
-		
-		for (int i = 0; i < 50; i++) {
-		}
 		
 	}
 
